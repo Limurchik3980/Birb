@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Мій помічник</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav a {
+            margin-right: 15px;
+        }
+
+        section {
+            margin-top: 30px;
+        }
+
+        #chek-list li,
+        #papuha-spysok li {
+            margin: 8px 0;
+        }
+
+        #chek-list li.done span {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .typ-knopka.aktyvna {
+            font-weight: bold;
+            background: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="#papuha">Папуга</a>
+        <a href="#chekrlist">Чекліст</a>
+        <a href="#shchodennyk">Щоденник</a>
+    </nav>
+
+    <section id="papuha">
+        <h2>Папуга</h2>
+        <div>
+            <button class="typ-knopka aktyvna" data-typ="Їжа">Їжа</button>
+            <button class="typ-knopka" data-typ="Гра">Гра</button>
+            <button class="typ-knopka" data-typ="Догляд">Догляд</button>
+        </div>
+        <p>
+            <input type="date" id="papuha-data">
+            <input type="text" id="papuha-tekst" placeholder="Що саме було">
+            <button id="papuha-zberehty">Зберегти</button>
+        </p>
+        <ul id="papuha-spysok"></ul>
+    </section>
+
+    <section id="chekrlist">
+        <h2>Чекліст</h2>
+        <input type="text" id="nova-sprava" placeholder="Нова справа">
+        <button id="dodaty">Додати</button>
+        <ul id="chek-list"></ul>
+    </section>
+
+    <section id="shchodennyk">
+        <h2>Щоденник</h2>
+        <p>Тут буде мій щоденник.</p>
+    </section>
+
+    <script>
+        // ===== Папуга =====
+        const papugaSpysok = document.getElementById("papuha-spysok");
+        const papugaData = document.getElementById("papuha-data");
+        const papugaTekst = document.getElementById("papuha-tekst");
+        const papugaKnopka = document.getElementById("papuha-zberehty");
+        const typKnopky = document.querySelectorAll(".typ-knopka");
+
+        let papugaZapysy = JSON.parse(localStorage.getItem("papuha")) || [];
+        let obranyTyp = "Їжа";
+
+        // Сьогоднішня дата у місцевому часі
+        const d = new Date();
+        papugaData.value = d.getFullYear() + "-" +
+            String(d.getMonth() + 1).padStart(2, "0") + "-" +
+            String(d.getDate()).padStart(2, "0");
+
+        typKnopky.forEach(function (b) {
+            b.addEventListener("click", function () {
+                obranyTyp = b.dataset.typ;
+                typKnopky.forEach(function (x) { x.classList.remove("aktyvna"); });
+                b.classList.add("aktyvna");
+            });
+        });
+
+        function papugaZberehty() {
+            localStorage.setItem("papuha", JSON.stringify(papugaZapysy));
+        }
+
+        function papugaPokazaty() {
+            papugaSpysok.innerHTML = "";
+            papugaZapysy.forEach(function (z, i) {
+                const li = document.createElement("li");
+                li.textContent = z.data + " · " + z.typ + ": " + z.tekst + " ";
+
+                const vydalyty = document.createElement("button");
+                vydalyty.textContent = "×";
+                vydalyty.addEventListener("click", function () {
+                    papugaZapysy.splice(i, 1);
+                    papugaZberehty();
+                    papugaPokazaty();
+                });
+
+                li.appendChild(vydalyty);
+                papugaSpysok.appendChild(li);
+            });
+        }
+
+        papugaKnopka.addEventListener("click", function () {
+            const tekst = papugaTekst.value.trim();
+            if (tekst === "" || papugaData.value === "") return;
+            papugaZapysy.push({ data: papugaData.value, typ: obranyTyp, tekst: tekst });
+            papugaTekst.value = "";
+            papugaZberehty();
+            papugaPokazaty();
+        });
+
+        papugaPokazaty();
+
+        // ===== Чекліст =====
+        const spysok = document.getElementById("chek-list");
+        const pole = document.getElementById("nova-sprava");
+        const knopka = document.getElementById("dodaty");
+
+        let zavdannya = JSON.parse(localStorage.getItem("chekliest")) || [];
+
+        function zberehty() {
+            localStorage.setItem("chekliest", JSON.stringify(zavdannya));
+        }
+
+        function pokazaty() {
+            spysok.innerHTML = "";
+            zavdannya.forEach(function (z, i) {
+                const li = document.createElement("li");
+                if (z.zrobleno) li.classList.add("done");
+
+                const galochka = document.createElement("input");
+                galochka.type = "checkbox";
+                galochka.checked = z.zrobleno;
+                galochka.addEventListener("change", function () {
+                    zavdannya[i].zrobleno = galochka.checked;
+                    zberehty();
+                    pokazaty();
+                });
+
+                const tekst = document.createElement("span");
+                tekst.textContent = " " + z.tekst + " ";
+
+                const vydalyty = document.createElement("button");
+                vydalyty.textContent = "×";
+                vydalyty.addEventListener("click", function () {
+                    zavdannya.splice(i, 1);
+                    zberehty();
+                    pokazaty();
+                });
+
+                li.appendChild(galochka);
+                li.appendChild(tekst);
+                li.appendChild(vydalyty);
+                spysok.appendChild(li);
+            });
+        }
+
+        function dodaty() {
+            const tekst = pole.value.trim();
+            if (tekst === "") return;
+            zavdannya.push({ tekst: tekst, zrobleno: false });
+            pole.value = "";
+            zberehty();
+            pokazaty();
+        }
+
+        knopka.addEventListener("click", dodaty);
+        pole.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") dodaty();
+        });
+
+        pokazaty();
+    </script>
+</body>
+
+</html>
