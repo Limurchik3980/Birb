@@ -1,227 +1,290 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Birb</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      min-height: 100vh;
-      background: #1a1a1f;
-      color: #eee;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Birb</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    /* Ліве меню */
-    .sidebar {
-      width: 200px;
-      background: #111116;
-      padding: 20px 10px;
-      border-right: 1px solid #2a2a33;
-    }
-    .sidebar h1 { font-size: 20px; margin: 0 10px 20px; }
-    .tab {
-      display: block;
-      padding: 12px 14px;
-      margin-bottom: 6px;
-      border-radius: 8px;
-      color: #bbb;
-      text-decoration: none;
-    }
-    .tab:hover { background: #22222a; color: #fff; }
-    .tab.active { background: #2e2e3a; color: #fff; font-weight: bold; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background: #1a1a1f;
+            color: #eee;
+        }
 
-    /* Вміст */
-    .content { flex: 1; padding: 30px; max-width: 800px; }
-    .panel { display: none; }
-    .panel.active { display: block; }
+        /* Ліве меню */
+        .sidebar {
+            width: 200px;
+            background: #111116;
+            padding: 20px 10px;
+            border-right: 1px solid #2a2a33;
+        }
 
-    .typ-knopka { padding: 6px 12px; margin-right: 4px; cursor: pointer; }
-    .typ-knopka.aktyvna { font-weight: bold; background: #ddd; color: #111; }
-    #chek-list li, #papuha-spysok li { margin: 8px 0; }
-    #chek-list li.done span { text-decoration: line-through; color: gray; }
+        .sidebar h1 {
+            font-size: 20px;
+            margin: 0 10px 20px;
+        }
 
-    /* На телефоні меню стає зверху */
-    @media (max-width: 600px) {
-      body { flex-direction: column; }
-      .sidebar { width: 100%; display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
-      .sidebar h1 { width: 100%; margin: 0 0 6px; }
-      .tab { margin-bottom: 0; }
-    }
-  </style>
+        .tab {
+            display: block;
+            padding: 12px 14px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        .tab:hover {
+            background: #22222a;
+            color: #fff;
+        }
+
+        .tab.active {
+            background: #2e2e3a;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Вміст */
+        .content {
+            flex: 1;
+            padding: 30px;
+            max-width: 800px;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .typ-knopka {
+            padding: 6px 12px;
+            margin-right: 4px;
+            cursor: pointer;
+        }
+
+        .typ-knopka.aktyvna {
+            font-weight: bold;
+            background: #ddd;
+            color: #111;
+        }
+
+        #chek-list li,
+        #papuha-spysok li {
+            margin: 8px 0;
+        }
+
+        #chek-list li.done span {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        /* На телефоні меню стає зверху */
+        @media (max-width: 600px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 10px;
+            }
+
+            .sidebar h1 {
+                width: 100%;
+                margin: 0 0 6px;
+            }
+
+            .tab {
+                margin-bottom: 0;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <aside class="sidebar">
-    <h1>🦜 Birb</h1>
-    <a class="tab" data-tab="papuha" href="#papuha">🦜 Папуга</a>
-    <a class="tab" data-tab="chekrlist" href="#chekrlist">✅ Чекліст</a>
-    <a class="tab" data-tab="shchodennyk" href="#shchodennyk">📔 Щоденник</a>
-  </aside>
+    <aside class="sidebar">
+        <h1>🦜 Birb</h1>
+        <a class="tab" data-tab="papuha" href="#papuha">🦜 Папуга</a>
+        <a class="tab" data-tab="chekrlist" href="#chekrlist">✅ Чекліст</a>
+        <a class="tab" data-tab="shchodennyk" href="#shchodennyk">📔 Щоденник</a>
+    </aside>
 
-  <main class="content">
-    <section id="papuha" class="panel">
-      <h2>Папуга</h2>
-      <div>
-        <button class="typ-knopka aktyvna" data-typ="Їжа">Їжа</button>
-        <button class="typ-knopka" data-typ="Гра">Гра</button>
-        <button class="typ-knopka" data-typ="Догляд">Догляд</button>
-      </div>
-      <p>
-        <input type="date" id="papuha-data">
-        <input type="text" id="papuha-tekst" placeholder="Що саме було">
-        <button id="papuha-zberehty">Зберегти</button>
-      </p>
-      <ul id="papuha-spysok"></ul>
-    </section>
+    <main class="content">
+        <section id="papuha" class="panel">
+            <h2>Папуга</h2>
+            <div>
+                <button class="typ-knopka aktyvna" data-typ="Їжа">Їжа</button>
+                <button class="typ-knopka" data-typ="Гра">Гра</button>
+                <button class="typ-knopka" data-typ="Догляд">Догляд</button>
+            </div>
+            <p>
+                <input type="date" id="papuha-data">
+                <input type="text" id="papuha-tekst" placeholder="Що саме було">
+                <button id="papuha-zberehty">Зберегти</button>
+            </p>
+            <ul id="papuha-spysok"></ul>
+        </section>
 
-    <section id="chekrlist" class="panel">
-      <h2>Чекліст</h2>
-      <input type="text" id="nova-sprava" placeholder="Нова справа">
-      <button id="dodaty">Додати</button>
-      <ul id="chek-list"></ul>
-    </section>
+        <section id="chekrlist" class="panel">
+            <h2>Чекліст</h2>
+            <input type="text" id="nova-sprava" placeholder="Нова справа">
+            <button id="dodaty">Додати</button>
+            <ul id="chek-list"></ul>
+        </section>
 
-    <section id="shchodennyk" class="panel">
-      <h2>Щоденник</h2>
-      <p>Тут буде мій щоденник.</p>
-    </section>
-  </main>
+        <section id="shchodennyk" class="panel">
+            <h2>Щоденник</h2>
+            <p>Тут буде мій щоденник.</p>
+        </section>
+    </main>
 
-  <script>
-    // ===== Перемикання вкладок =====
-    const vkladky = document.querySelectorAll(".tab");
-    const paneli = document.querySelectorAll(".panel");
+    <script>
+        // ===== Перемикання вкладок =====
+        const vkladky = document.querySelectorAll(".tab");
+        const paneli = document.querySelectorAll(".panel");
 
-    function pokazatyVkladku(id) {
-      if (!document.getElementById(id)) id = "papuha";
-      paneli.forEach(function (p) { p.classList.toggle("active", p.id === id); });
-      vkladky.forEach(function (t) { t.classList.toggle("active", t.dataset.tab === id); });
-    }
+        function pokazatyVkladku(id) {
+            if (!document.getElementById(id)) id = "papuha";
+            paneli.forEach(function (p) { p.classList.toggle("active", p.id === id); });
+            vkladky.forEach(function (t) { t.classList.toggle("active", t.dataset.tab === id); });
+        }
 
-    window.addEventListener("hashchange", function () {
-      pokazatyVkladku(location.hash.slice(1));
-    });
-    pokazatyVkladku(location.hash.slice(1) || "papuha");
+        window.addEventListener("hashchange", function () {
+            pokazatyVkladku(location.hash.slice(1));
+        });
+        pokazatyVkladku(location.hash.slice(1) || "papuha");
 
-    // ===== Папуга =====
-    const papugaSpysok = document.getElementById("papuha-spysok");
-    const papugaData = document.getElementById("papuha-data");
-    const papugaTekst = document.getElementById("papuha-tekst");
-    const papugaKnopka = document.getElementById("papuha-zberehty");
-    const typKnopky = document.querySelectorAll(".typ-knopka");
+        // ===== Папуга =====
+        const papugaSpysok = document.getElementById("papuha-spysok");
+        const papugaData = document.getElementById("papuha-data");
+        const papugaTekst = document.getElementById("papuha-tekst");
+        const papugaKnopka = document.getElementById("papuha-zberehty");
+        const typKnopky = document.querySelectorAll(".typ-knopka");
 
-    let papugaZapysy = JSON.parse(localStorage.getItem("papuha")) || [];
-    let obranyTyp = "Їжа";
+        let papugaZapysy = JSON.parse(localStorage.getItem("papuha")) || [];
+        let obranyTyp = "Їжа";
 
-    const d = new Date();
-    papugaData.value = d.getFullYear() + "-" +
-      String(d.getMonth() + 1).padStart(2, "0") + "-" +
-      String(d.getDate()).padStart(2, "0");
+        const d = new Date();
+        papugaData.value = d.getFullYear() + "-" +
+            String(d.getMonth() + 1).padStart(2, "0") + "-" +
+            String(d.getDate()).padStart(2, "0");
 
-    typKnopky.forEach(function (b) {
-      b.addEventListener("click", function () {
-        obranyTyp = b.dataset.typ;
-        typKnopky.forEach(function (x) { x.classList.remove("aktyvna"); });
-        b.classList.add("aktyvna");
-      });
-    });
-
-    function papugaZberehty() {
-      localStorage.setItem("papuha", JSON.stringify(papugaZapysy));
-    }
-
-    function papugaPokazaty() {
-      papugaSpysok.innerHTML = "";
-      papugaZapysy.forEach(function (z, i) {
-        const li = document.createElement("li");
-        li.textContent = z.data + " · " + z.typ + ": " + z.tekst + " ";
-
-        const vydalyty = document.createElement("button");
-        vydalyty.textContent = "×";
-        vydalyty.addEventListener("click", function () {
-          papugaZapysy.splice(i, 1);
-          papugaZberehty();
-          papugaPokazaty();
+        typKnopky.forEach(function (b) {
+            b.addEventListener("click", function () {
+                obranyTyp = b.dataset.typ;
+                typKnopky.forEach(function (x) { x.classList.remove("aktyvna"); });
+                b.classList.add("aktyvna");
+            });
         });
 
-        li.appendChild(vydalyty);
-        papugaSpysok.appendChild(li);
-      });
-    }
+        function papugaZberehty() {
+            localStorage.setItem("papuha", JSON.stringify(papugaZapysy));
+        }
 
-    papugaKnopka.addEventListener("click", function () {
-      const tekst = papugaTekst.value.trim();
-      if (tekst === "" || papugaData.value === "") return;
-      papugaZapysy.push({ data: papugaData.value, typ: obranyTyp, tekst: tekst });
-      papugaTekst.value = "";
-      papugaZberehty();
-      papugaPokazaty();
-    });
+        function papugaPokazaty() {
+            papugaSpysok.innerHTML = "";
+            papugaZapysy.forEach(function (z, i) {
+                const li = document.createElement("li");
+                li.textContent = z.data + " · " + z.typ + ": " + z.tekst + " ";
 
-    papugaPokazaty();
+                const vydalyty = document.createElement("button");
+                vydalyty.textContent = "×";
+                vydalyty.addEventListener("click", function () {
+                    papugaZapysy.splice(i, 1);
+                    papugaZberehty();
+                    papugaPokazaty();
+                });
 
-    // ===== Чекліст =====
-    const spysok = document.getElementById("chek-list");
-    const pole = document.getElementById("nova-sprava");
-    const knopka = document.getElementById("dodaty");
+                li.appendChild(vydalyty);
+                papugaSpysok.appendChild(li);
+            });
+        }
 
-    let zavdannya = JSON.parse(localStorage.getItem("chekliest")) || [];
-
-    function zberehty() {
-      localStorage.setItem("chekliest", JSON.stringify(zavdannya));
-    }
-
-    function pokazaty() {
-      spysok.innerHTML = "";
-      zavdannya.forEach(function (z, i) {
-        const li = document.createElement("li");
-        if (z.zrobleno) li.classList.add("done");
-
-        const galochka = document.createElement("input");
-        galochka.type = "checkbox";
-        galochka.checked = z.zrobleno;
-        galochka.addEventListener("change", function () {
-          zavdannya[i].zrobleno = galochka.checked;
-          zberehty();
-          pokazaty();
+        papugaKnopka.addEventListener("click", function () {
+            const tekst = papugaTekst.value.trim();
+            if (tekst === "" || papugaData.value === "") return;
+            papugaZapysy.push({ data: papugaData.value, typ: obranyTyp, tekst: tekst });
+            papugaTekst.value = "";
+            papugaZberehty();
+            papugaPokazaty();
         });
 
-        const tekst = document.createElement("span");
-        tekst.textContent = " " + z.tekst + " ";
+        papugaPokazaty();
 
-        const vydalyty = document.createElement("button");
-        vydalyty.textContent = "×";
-        vydalyty.addEventListener("click", function () {
-          zavdannya.splice(i, 1);
-          zberehty();
-          pokazaty();
+        // ===== Чекліст =====
+        const spysok = document.getElementById("chek-list");
+        const pole = document.getElementById("nova-sprava");
+        const knopka = document.getElementById("dodaty");
+
+        let zavdannya = JSON.parse(localStorage.getItem("chekliest")) || [];
+
+        function zberehty() {
+            localStorage.setItem("chekliest", JSON.stringify(zavdannya));
+        }
+
+        function pokazaty() {
+            spysok.innerHTML = "";
+            zavdannya.forEach(function (z, i) {
+                const li = document.createElement("li");
+                if (z.zrobleno) li.classList.add("done");
+
+                const galochka = document.createElement("input");
+                galochka.type = "checkbox";
+                galochka.checked = z.zrobleno;
+                galochka.addEventListener("change", function () {
+                    zavdannya[i].zrobleno = galochka.checked;
+                    zberehty();
+                    pokazaty();
+                });
+
+                const tekst = document.createElement("span");
+                tekst.textContent = " " + z.tekst + " ";
+
+                const vydalyty = document.createElement("button");
+                vydalyty.textContent = "×";
+                vydalyty.addEventListener("click", function () {
+                    zavdannya.splice(i, 1);
+                    zberehty();
+                    pokazaty();
+                });
+
+                li.appendChild(galochka);
+                li.appendChild(tekst);
+                li.appendChild(vydalyty);
+                spysok.appendChild(li);
+            });
+        }
+
+        function dodaty() {
+            const tekst = pole.value.trim();
+            if (tekst === "") return;
+            zavdannya.push({ tekst: tekst, zrobleno: false });
+            pole.value = "";
+            zberehty();
+            pokazaty();
+        }
+
+        knopka.addEventListener("click", dodaty);
+        pole.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") dodaty();
         });
 
-        li.appendChild(galochka);
-        li.appendChild(tekst);
-        li.appendChild(vydalyty);
-        spysok.appendChild(li);
-      });
-    }
-
-    function dodaty() {
-      const tekst = pole.value.trim();
-      if (tekst === "") return;
-      zavdannya.push({ tekst: tekst, zrobleno: false });
-      pole.value = "";
-      zberehty();
-      pokazaty();
-    }
-
-    knopka.addEventListener("click", dodaty);
-    pole.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") dodaty();
-    });
-
-    pokazaty();
-  </script>
+        pokazaty();
+    </script>
 </body>
+
 </html>
