@@ -1,0 +1,204 @@
+/* Загальні стилі: сторінка, меню, кнопки, підтвердження */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background: #1a1a1f;
+    color: #fff;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+input,
+textarea {
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    background: #111116;
+    padding: 20px 10px;
+    border-right: 1px solid #2a2a33;
+}
+
+.sidebar h1 {
+    font-size: 20px;
+    margin: 0 10px 20px;
+}
+
+.tab {
+    display: block;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    color: #ddd;
+    text-decoration: none;
+}
+
+.tab:hover {
+    background: #22222a;
+}
+
+.tab.active {
+    background: #2e2e3a;
+    color: #fff;
+    font-weight: bold;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+    min-width: 0;
+}
+
+.panel {
+    display: none;
+}
+
+.panel.active {
+    display: block;
+}
+
+button {
+    cursor: pointer;
+    color: #fff;
+    background: #2e2e3a;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #3a3a48;
+}
+
+input[type="text"],
+input[type="date"] {
+    background: #22222a;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 6px 12px;
+}
+
+/* Маленькі круглі білі хрестики на червоному */
+.hrestyk {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #e53935;
+    color: #fff;
+    font-size: 9px;
+    line-height: 1;
+}
+
+.hrestyk:hover {
+    background: #c62828;
+}
+
+/* Меню Редагувати / Видалити */
+.menu {
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #2e2e3a;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.menu[hidden] {
+    display: none;
+}
+
+.menu button {
+    text-align: left;
+    border-radius: 8px;
+    border: none;
+    background: none;
+}
+
+.menu button:hover {
+    background: #3a3a48;
+}
+
+/* Вікно підтвердження */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.overlay[hidden] {
+    display: none;
+}
+
+.vikno-potv {
+    background: #2e2e3a;
+    border: 1px solid #555;
+    border-radius: 12px;
+    padding: 20px;
+    min-width: 260px;
+}
+
+.vikno-potv p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.potv-knopky {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+ul {
+    padding: 0;
+}
+
+@media (max-width: 600px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px;
+    }
+
+    .sidebar h1 {
+        width: 100%;
+        margin: 0 0 6px;
+    }
+
+    .tab {
+        margin-bottom: 0;
+    }
+}
+.versiya { display: block; margin: 0 10px; font-size: 12px; color: #777; }

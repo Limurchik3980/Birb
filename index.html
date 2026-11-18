@@ -1,300 +1,108 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Birb</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      min-height: 100vh;
-      background: #1a1a1f;
-      color: #fff;
-    }
+<>
 
-    /* Ліве меню */
-    .sidebar {
-      width: 200px;
-      background: #111116;
-      padding: 20px 10px;
-      border-right: 1px solid #2a2a33;
-    }
-    .sidebar h1 { font-size: 20px; margin: 0 10px 20px; color: #fff; }
-    .tab {
-      display: block;
-      padding: 12px 14px;
-      margin-bottom: 6px;
-      border-radius: 8px;
-      color: #ddd;
-      text-decoration: none;
-    }
-    .tab:hover { background: #22222a; color: #fff; }
-    .tab.active { background: #2e2e3a; color: #fff; font-weight: bold; }
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Birb</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/kesha.css">
+    <link rel="stylesheet" href="css/checklist.css">
+  </head>
 
-    /* Вміст */
-    .content { flex: 1; padding: 30px; max-width: 800px; color: #fff; }
-    .panel { display: none; }
-    .panel.active { display: block; }
+  <body>
+    <aside class="sidebar">
+      <h1>🦜 Birb</h1>
+      <span class="versiya">v1.0</span>
+      <a class="tab" data-tab="papuha" href="#papuha">🦜 Кешаня</a>
+      <a class="tab" data-tab="chekrlist" href="#chekrlist">✅ Чекліст</a>
+      <a class="tab" data-tab="shchodennyk" href="#shchodennyk">📔 Щоденник</a>
+    </aside>
 
-    button {
-      cursor: pointer;
-      color: #fff;
-      background: #2e2e3a;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 6px 12px;
-    }
-    button:hover { background: #3a3a48; }
-    button.aktyvna { background: #ddd; color: #111; font-weight: bold; }
+    <main class="content">
+      <!-- Кешаня -->
+      <section id="papuha" class="panel">
 
-    input[type="text"], input[type="date"] {
-      background: #22222a;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 6px 10px;
-    }
+        <!-- Список днів -->
+        <div id="vyd-spysok">
+          <h2>🦜 Кешаня</h2>
+          <button class="velykyj" id="novyy-den">Додати новий день +</button>
+          <div class="rozdil">
+            <h3>Минулі дні:</h3>
+            <div id="minuli-dni"></div>
+          </div>
+        </div>
 
-    .knopka-den {
-      display: block;
-      background: none;
-      border: none;
-      padding: 6px 0;
-      font-size: 18px;
-      color: #fff;
-      text-align: left;
-    }
-    .knopka-den:hover { background: none; text-decoration: underline; }
-    .velykyj { font-size: 18px; background: none; border: none; padding: 6px 0; margin: 20px 0; }
-    .velykyj:hover { background: none; text-decoration: underline; }
+        <!-- Вибір дати для нового дня -->
+        <div id="data-panel" hidden>
+          <h2>Новий день</h2>
+          <p><input type="date" id="novyj-data"></p>
+          <p>
+            <button id="novyj-start">Далі</button>
+            <button id="novyj-nazad">← Назад</button>
+          </p>
+        </div>
 
-    ul { list-style: none; padding: 0; }
-    li { margin: 8px 0; }
-    li.done span { text-decoration: line-through; color: #888; }
-    .rozdil { margin-top: 30px; }
+        <!-- Редактор дня -->
+        <div id="redaktor" hidden>
+          <div class="shapka">
+            <h2>Редактор нового дня</h2>
+            <input type="date" id="red-data">
+            <button id="red-nazad">← Назад</button>
+          </div>
 
-    /* На телефоні меню стає зверху */
-    @media (max-width: 600px) {
-      body { flex-direction: column; }
-      .sidebar { width: 100%; display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
-      .sidebar h1 { width: 100%; margin: 0 0 6px; }
-      .tab { margin-bottom: 0; }
-    }
-  </style>
-</head>
-<body>
-  <aside class="sidebar">
-    <h1>🦜 Birb</h1>
-    <a class="tab" data-tab="papuha" href="#papuha">🦜 Кешаня</a>
-    <a class="tab" data-tab="chekrlist" href="#chekrlist">✅ Чекліст</a>
-    <a class="tab" data-tab="shchodennyk" href="#shchodennyk">📔 Щоденник</a>
-  </aside>
+          <div class="redaktor-rjad">
+            <div class="livo">
+              <div class="blok" id="blok-akt"></div>
+              <div class="blok" id="blok-khar"></div>
+            </div>
+            <div class="pravo">
+              <div class="ikony-kol" id="ikony-akt"></div>
+              <div class="ikony-kol" id="ikony-khar"></div>
+            </div>
+          </div>
 
-  <main class="content">
-    <!-- Кешаня -->
-    <section id="papuha" class="panel">
-      <h2>🦜 Кешаня</h2>
+          <div class="nyzhnij">
+            <button id="red-zavershyty">Завершити</button>
+          </div>
+        </div>
+      </section>
 
-      <!-- Список днів -->
-      <div id="vyd-spysok">
-        <button class="velykyj" id="novyy-den">Додати новий день +</button>
-        <div class="rozdil">
-          <h3>Минулі дні:</h3>
-          <div id="minuli-dni"></div>
+      <!-- Чекліст -->
+      <section id="chekrlist" class="panel">
+        <h2>✅ Чекліст</h2>
+        <input type="text" id="nova-sprava" placeholder="Нова справа">
+        <button id="dodaty">Додати</button>
+        <ul id="chek-list"></ul>
+      </section>
+
+      <!-- Щоденник -->
+      <section id="shchodennyk" class="panel">
+        <h2>📔 Щоденник</h2>
+        <p>Тут буде мій щоденник.</p>
+      </section>
+    </main>
+
+    <div id="menu" class="menu" hidden></div>
+
+    <!-- Підтвердження -->
+    <div id="potverdzhennya" class="overlay" hidden>
+      <div class="vikno-potv">
+        <p id="potv-tekst"></p>
+        <div class="potv-knopky">
+          <button id="potv-ta">Ага</button>
+          <button id="potv-ni">Нє</button>
         </div>
       </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/checklist.js"></script>
+    <script src="js/kesha/storage.js"></script>
+    <script src="js/kesha/days.js"></script>
+    <script src="js/kesha/editor.js"></script>
+    <script src="js/kesha/days.js"></script>
+    <script src="js/kesha/icons.js"></script>
+  </body>
 
-      <!-- Редактор дня -->
-      <div id="redaktor" hidden>
-        <h2>Редактор нового дня</h2>
-        <p>
-          <input type="date" id="red-data">
-        </p>
-        <p>
-          <input type="text" id="red-nova" placeholder="Що зробити для Кешаня">
-          <button id="red-dodaty">Додати</button>
-        </p>
-        <ul id="red-spysok"></ul>
-        <p><button id="red-nazad">← Назад</button></p>
-      </div>
-    </section>
-
-    <section id="chekrlist" class="panel">
-      <h2>✅ Чекліст</h2>
-      <input type="text" id="nova-sprava" placeholder="Нова справа">
-      <button id="dodaty">Додати</button>
-      <ul id="chek-list"></ul>
-    </section>
-
-    <section id="shchodennyk" class="panel">
-      <h2>📔 Щоденник</h2>
-      <p>Тут буде мій щоденник.</p>
-    </section>
-  </main>
-
-  <script>
-    // ===== Перемикання вкладок =====
-    const vkladky = document.querySelectorAll(".tab");
-    const paneli = document.querySelectorAll(".panel");
-
-    function pokazatyVkladku(id) {
-      if (!document.getElementById(id)) id = "papuha";
-      paneli.forEach(function (p) { p.classList.toggle("active", p.id === id); });
-      vkladky.forEach(function (t) { t.classList.toggle("active", t.dataset.tab === id); });
-    }
-
-    window.addEventListener("hashchange", function () {
-      pokazatyVkladku(location.hash.slice(1));
-    });
-    pokazatyVkladku(location.hash.slice(1) || "papuha");
-
-    // ===== Кешаня =====
-    const vydSpysok = document.getElementById("vyd-spysok");
-    const redaktor = document.getElementById("redaktor");
-    const minuliDni = document.getElementById("minuli-dni");
-    const redData = document.getElementById("red-data");
-    const redNova = document.getElementById("red-nova");
-    const redSpysok = document.getElementById("red-spysok");
-
-    // Дні: { "2026-11-17": [ {tekst, zrobleno}, ... ], ... }
-    let dni = JSON.parse(localStorage.getItem("kesha-dni")) || {};
-    let potochnyjDen = "";
-
-    function zberehtyDni() {
-      localStorage.setItem("kesha-dni", JSON.stringify(dni));
-    }
-
-    function sohodni() {
-      const d = new Date();
-      return d.getFullYear() + "-" +
-        String(d.getMonth() + 1).padStart(2, "0") + "-" +
-        String(d.getDate()).padStart(2, "0");
-    }
-
-    function formatDaty(data) {
-      const [r, m, d] = data.split("-");
-      return d + "." + m + "." + r;
-    }
-
-    function pokazatyRedaktor(vidkryty) {
-      vydSpysok.hidden = vidkryty;
-      redaktor.hidden = !vidkryty;
-    }
-
-    function pokazatyMinuli() {
-      minuliDni.innerHTML = "";
-      Object.keys(dni).sort().reverse().forEach(function (data) {
-        const zavd = dni[data];
-        const zrobleno = zavd.filter(function (z) { return z.zrobleno; }).length;
-        const knopka = document.createElement("button");
-        knopka.className = "knopka-den";
-        knopka.textContent = formatDaty(data) + "  (" + zrobleno + "/" + zavd.length + ")";
-        knopka.addEventListener("click", function () {
-          vidkrytyDen(data);
-        });
-        minuliDni.appendChild(knopka);
-      });
-      if (Object.keys(dni).length === 0) {
-        minuliDni.textContent = "Поки що порожньо.";
-      }
-    }
-
-    function vidkrytyDen(data) {
-      potochnyjDen = data;
-      redData.value = data;
-      pokazatyRedaktor(true);
-      pokazatyZavdannyaDnya();
-    }
-
-    function pokazatyZavdannyaDnya() {
-      redSpysok.innerHTML = "";
-      const zavd = dni[potochnyjDen] || [];
-      zavd.forEach(function (z, i) {
-        const li = document.createElement("li");
-        if (z.zrobleno) li.classList.add("done");
-
-        const galochka = document.createElement("input");
-        galochka.type = "checkbox";
-        galochka.checked = z.zrobleno;
-        galochka.addEventListener("change", function () {
-          dni[potochnyjDen][i].zrobleno = galochka.checked;
-          zberehtyDni();
-          pokazatyZavdannyaDnya();
-        });
-
-        const tekst = document.createElement("span");
-        tekst.textContent = " " + z.tekst + " ";
-
-        const vydalyty = document.createElement("button");
-        vydalyty.textContent = "×";
-        vydalyty.addEventListener("click", function () {
-          dni[potochnyjDen].splice(i, 1);
-          if (dni[potochnyjDen].length === 0) delete dni[potochnyjDen];
-          zberehtyDni();
-          pokazatyZavdannyaDnya();
-        });
-
-        li.appendChild(galochka);
-        li.appendChild(tekst);
-        li.appendChild(vydalyty);
-        redSpysok.appendChild(li);
-      });
-    }
-
-    document.getElementById("novyy-den").addEventListener("click", function () {
-      vidkrytyDen(sohodni());
-    });
-
-    redData.addEventListener("change", function () {
-      if (redData.value === "") return;
-      potochnyjDen = redData.value;
-      pokazatyZavdannyaDnya();
-    });
-
-    function dodatyZavdannya() {
-      const tekst = redNova.value.trim();
-      if (tekst === "" || potochnyjDen === "") return;
-      if (!dni[potochnyjDen]) dni[potochnyjDen] = [];
-      dni[potochnyjDen].push({ tekst: tekst, zrobleno: false });
-      redNova.value = "";
-      zberehtyDni();
-      pokazatyZavdannyaDnya();
-    }
-
-    document.getElementById("red-dodaty").addEventListener("click", dodatyZavdannya);
-    redNova.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") dodatyZavdannya();
-    });
-
-    document.getElementById("red-nazad").addEventListener("click", function () {
-      pokazatyRedaktor(false);
-      pokazatyMinuli();
-    });
-
-    pokazatyRedaktor(false);
-    pokazatyMinuli();
-
-    // ===== Чекліст =====
-    const spysok = document.getElementById("chek-list");
-    const pole = document.getElementById("nova-sprava");
-    const knopka = document.getElementById("dodaty");
-
-    let zavdannya = JSON.parse(localStorage.getItem("chekliest")) || [];
-
-    function zberehty() {
-      localStorage.setItem("chekliest", JSON.stringify(zavdannya));
-    }
-
-    function pokazaty() {
-      spysok.innerHTML = "";
-      zavdannya.forEach(function (z, i) {
-        const li = document.createElement("li");
-        if (z.zrobleno) li.classList.add("done");
-
-        const galochka = document.createElement("input");
-        galochka.type = "checkbox";
-        galochka.checked = z.zrobleno;
-        galochka.addEventListener("change", function () {
+</html>

@@ -1,0 +1,10 @@
+/* Стилі чекліста */
+li {
+    margin: 8px 0;
+    list-style: none;
+}
+
+li.done span {
+    text-decoration: line-through;
+    color: #888;
+}

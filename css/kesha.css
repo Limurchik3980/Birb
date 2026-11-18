@@ -1,0 +1,201 @@
+/* Стилі Кешаня: список днів, редактор, групи, іконки */
+.den-knopka {
+    display: grid;
+    grid-template-columns: 120px 36px 110px 60px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 16px;
+    padding: 6px 0;
+    width: auto;
+}
+
+.den-knopka:hover {
+    text-decoration: underline;
+    background: none;
+}
+
+.velykyj {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.rozdil {
+    margin-top: 30px;
+}
+
+.shapka {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.shapka h2 {
+    margin: 0;
+}
+
+.redaktor-rjad {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.livo {
+    width: 400px;
+    max-width: 100%;
+}
+
+.blok {
+    border: 2px solid #fff;
+    border-radius: 6px;
+    padding: 12px;
+    height: 330px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+}
+
+.blok h3 {
+    display: inline-block;
+    margin: 0 0 12px;
+    font-size: 16px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 2px;
+}
+
+/* Група: мітка часу + її активності */
+.gruppa {
+    padding: 8px 0 12px;
+    border-bottom: 1px solid #333;
+}
+
+.chas-ryad {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.chas-pole {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #888;
+    border-radius: 0;
+    padding: 2px 0;
+    margin: 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.chas-pole::placeholder {
+    color: #777;
+}
+
+.slot {
+    margin-bottom: 6px;
+}
+
+.slot.tyagnet {
+    opacity: 0.4;
+}
+
+/* Порожнє поле: невелике, облягає текст */
+.zona {
+    display: inline-block;
+    border: 1.5px solid #fff;
+    border-radius: 20px;
+    padding: 3px 10px;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Заповнена активність */
+.zafiksovano {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    color: #fff;
+    font-size: 16px;
+    padding: 4px 0;
+}
+
+/* Три лінії для перетягування */
+.ruchka {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    cursor: grab;
+    background: repeating-linear-gradient(to bottom, #999 0 2px, transparent 2px 5px);
+}
+
+.pravo {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.ikony-kol {
+    min-width: 200px;
+}
+
+.pill {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #fff;
+    padding: 2px 0;
+    margin-bottom: 14px;
+}
+
+.sitka {
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.ikona-wrap {
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.ikona {
+    font-size: 32px;
+    line-height: 1.2;
+    cursor: grab;
+    margin-bottom: 2px;
+}
+
+.forma {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 240px;
+    margin-top: 10px;
+}
+
+.forma[hidden] {
+    display: none;
+}
+
+.forma-knopky {
+    display: flex;
+    gap: 6px;
+}
+
+.dodaty-nova {
+    display: block;
+    width: 140px;
+    height: 70px;
+    border-radius: 20px;
+}
+
+.nyzhnij {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
