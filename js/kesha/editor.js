@@ -36,6 +36,28 @@ function perenesty(g, from, to) {
     g.slots = filled.concat([{ mistce: null }]);
 }
 
+// Перетворює текст тривалості на хвилини: "45" або "12:00-13:00"
+function hvylyny(tekst) {
+    const t = (tekst || "").trim();
+    const m = t.match(/^(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/);
+    if (m) {
+        let r = (+m[3]) * 60 + (+m[4]) - ((+m[1]) * 60 + (+m[2]));
+        if (r < 0) r += 1440; // проміжок через північ
+        return r;
+    }
+    if (/^\d+$/.test(t)) return +t;
+    return 0;
+}
+
+// Сума тривалостей активностей у групі, наприклад "Разом: 2 год 15 хв"
+function formatSuma(g) {
+    const vsogo = g.slots.reduce((sum, x) => sum + (x.mistce ? hvylyny(x.trv) : 0), 0);
+    if (vsogo === 0) return "";
+    const god = Math.floor(vsogo / 60);
+    const hv = vsogo % 60;
+    return "Разом: " + god + " год " + hv + " хв";
+}
+
 // Поле часу підлаштовується під довжину тексту
 function pidlashtuvaty(el) {
     const n = el.value.length || el.placeholder.length;
@@ -194,8 +216,25 @@ function renderBloky() {
 
                     ob.appendChild(ruchka);
                     ob.appendChild(tekst);
+
+                    // Поле тривалості тільки для активностей, не для їжі
+                    if (k === "akt") {
+                        const trv = document.createElement("input");
+                        trv.type = "text";
+                        trv.className = "trv-pole";
+                        trv.placeholder = "12:00-13:00";
+                        trv.value = s.trv || "";
+                        trv.addEventListener("input", function () {
+                            s.trv = trv.value;
+                            const sumaEl = gr.querySelector(".suma");
+                            if (sumaEl) sumaEl.textContent = formatSuma(g);
+                        });
+                        ob.appendChild(trv);
+                    }
+
                     ob.appendChild(x);
                     slot.appendChild(ob);
+
                 } else {
                     // Порожня зона для перетягування іконок
                     const zona = document.createElement("div");
@@ -217,7 +256,16 @@ function renderBloky() {
                 gr.appendChild(slot);
             });
 
+            // Сума тривалостей в кінці мітки, тільки для активностей
+            if (k === "akt") {
+                const suma = document.createElement("div");
+                suma.className = "suma";
+                suma.textContent = formatSuma(g);
+                gr.appendChild(suma);
+            }
+
             kont.appendChild(gr);
+
         });
 
         const dodatyMitku = document.createElement("button");

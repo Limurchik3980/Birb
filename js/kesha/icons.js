@@ -1,5 +1,41 @@
 // ===== Кешаня: іконки справа і меню =====
 
+// Автопрокрутка сторінки, коли тягнеш іконку біля краю екрана
+let avtoRuh = null;
+
+function avtoProkrutka(e) {
+    const kray = 80;   // зона біля краю в пікселях, де починається прокрутка
+    const shvydk = 12; // швидкість прокрутки
+    const vysota = window.innerHeight;
+
+    if (e.clientY < kray) {
+        window.scrollBy(0, -shvydk);
+    } else if (e.clientY > vysota - kray) {
+        window.scrollBy(0, shvydk);
+    }
+}
+
+function pochatyAvtoRuh() {
+    if (avtoRuh) return;
+    avtoRuh = setInterval(function () {
+        if (lastY === null) return;
+        const e = { clientY: lastY };
+        avtoProkrutka(e);
+    }, 16);
+}
+
+function zupynytyAvtoRuh() {
+    clearInterval(avtoRuh);
+    avtoRuh = null;
+    lastY = null;
+}
+
+// Остання позиція миші під час перетягування
+let lastY = null;
+document.addEventListener("dragover", function (e) {
+    if (peretyaguvanyj) lastY = e.clientY;
+});
+
 // Яку іконку редагуємо (індекс) і чи відкрита форма
 const redagIdx = { akt: -1, khar: -1 };
 const formaVidkr = { akt: false, khar: false };
@@ -88,9 +124,11 @@ function renderIkony() {
             el.addEventListener("dragstart", function (e) {
                 peretyaguvanyj = { k: k, emoji: ik.emoji, tekst: ik.tekst };
                 e.dataTransfer.setData("text/plain", ik.tekst);
+                pochatyAvtoRuh();
             });
             el.addEventListener("dragend", function () {
                 peretyaguvanyj = null;
+                zupynytyAvtoRuh();
             });
 
             el.addEventListener("contextmenu", function (e) {
