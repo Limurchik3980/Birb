@@ -16,7 +16,7 @@ let korystuvach = null; // поточний залогінений корист�
 
 function uvijty() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).catch(function (err) {
+    auth.signInWithRedirect(provider).catch(function (err) {
         alert("Не вдалося увійти: " + err.message);
     });
 }
@@ -78,6 +78,11 @@ function pokazatyStanVhodu() {
         info.hidden = true;
     }
 }
+
+// Перевіряємо, чи ми повернулися після входу через Google
+auth.getRedirectResult().catch(function (err) {
+    if (err.code !== "auth/null-user") alert("Не вдалося увійти: " + err.message);
+});
 
 // Стежить за входом і виходом
 auth.onAuthStateChanged(function (u) {
