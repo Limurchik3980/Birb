@@ -20,6 +20,10 @@ let dni = JSON.parse(localStorage.getItem("kesha-dni3")) || {};
 function zberehtyDni() {
     localStorage.setItem("kesha-ikony", JSON.stringify(ikony));
     localStorage.setItem("kesha-dni3", JSON.stringify(dni));
+    hmaraZberehty({
+        ikony: JSON.stringify(ikony),
+        dni: JSON.stringify(dni)
+    });
 }
 
 function sohodni() {

@@ -6,6 +6,7 @@ let zavdannya = JSON.parse(localStorage.getItem("chekliest")) || [];
 
 function zberehty() {
     localStorage.setItem("chekliest", JSON.stringify(zavdannya));
+    hmaraZberehty({ chekliest: JSON.stringify(zavdannya) });
 }
 
 function pokazaty() {

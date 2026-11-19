@@ -18,6 +18,13 @@
       <a class="tab" data-tab="papuha" href="#papuha">🦜 Кешаня</a>
       <a class="tab" data-tab="chekrlist" href="#chekrlist">✅ Чекліст</a>
       <a class="tab" data-tab="shchodennyk" href="#shchodennyk">📔 Щоденник</a>
+      <div class="vhid">
+        <button id="vhid-knopka">Увійти через Google</button>
+        <div id="vhid-info" hidden>
+          <span id="vhid-email"></span>
+          <button id="vyhid-knopka">Вийти</button>
+        </div>
+      </div>
     </aside>
 
     <main class="content">
@@ -96,6 +103,10 @@
         </div>
       </div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="js/cloud.js"></script>
     <script src="js/app.js"></script>
     <script src="js/checklist.js"></script>
     <script src="js/kesha/storage.js"></script>
