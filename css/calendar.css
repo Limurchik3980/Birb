@@ -1,0 +1,19 @@
+/* Календар у верхній частині вкладки Чекліст */
+#kalendar { height: 48vh; min-height: 320px; display: flex; flex-direction: column; border: 1px solid #333; border-radius: 10px; padding: 10px; margin-bottom: 20px; background: #16161c; }
+
+.kal-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.kal-lyvo, .kal-rezhymy { display: flex; align-items: center; gap: 6px; }
+.kal-nazva { font-weight: bold; margin-left: 10px; font-size: 16px; }
+.kal-knopka { padding: 4px 10px; font-size: 13px; }
+.kal-knopka.aktyvna { background: #ddd; color: #111; font-weight: bold; }
+
+.kal-golova, .kal-sitka { display: grid; grid-template-columns: repeat(7, 1fr); }
+.kal-golova div { text-align: center; font-size: 12px; color: #aaa; padding: 4px 0; }
+.kal-sitka { flex: 1; min-height: 0; grid-auto-rows: 1fr; border-top: 1px solid #333; }
+
+.kal-komirka { border: 1px solid #2a2a33; padding: 4px; font-size: 13px; cursor: pointer; overflow: hidden; }
+.kal-komirka:hover { background: #22222a; }
+.kal-komirka.inshyj { color: #555; }
+.kal-komirka.siohodni { border-color: #fff; font-weight: bold; }
+
+.kal-porozhno { color: #888; padding: 10px; }
