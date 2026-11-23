@@ -13,6 +13,36 @@ function pokazatyEkran(ek) {
     document.getElementById("redaktor").hidden = ek !== "redaktor";
 }
 
+// Меню для старого дня: Редагувати / Видалити
+function pokazatyMenuDnya(x, y, data) {
+    const menu = document.getElementById("menu");
+    menu.innerHTML = "";
+
+    const ed = document.createElement("button");
+    ed.textContent = "Редагувати";
+    ed.addEventListener("click", function () {
+        menu.hidden = true;
+        vidkrytyZbereghenyDen(data);
+    });
+
+    const vd = document.createElement("button");
+    vd.textContent = "Видалити";
+    vd.addEventListener("click", function () {
+        menu.hidden = true;
+        potverdyty("Справді видалити?", function () {
+            delete dni[data];
+            zberehtyDni();
+            pokazatyMinuli();
+        });
+    });
+
+    menu.appendChild(ed);
+    menu.appendChild(vd);
+    menu.style.left = x + "px";
+    menu.style.top = y + "px";
+    menu.hidden = false;
+}
+
 function pokazatyMinuli() {
     const kont = document.getElementById("minuli-dni");
     kont.innerHTML = "";
@@ -29,7 +59,24 @@ function pokazatyMinuli() {
             sp.textContent = t;
             b.appendChild(sp);
         });
-        b.addEventListener("click", () => vidkrytyZbereghenyDen(data));
+
+        // Правий клік на ПК
+        b.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+            pokazatyMenuDnya(e.clientX, e.clientY, data);
+        });
+
+        // Довге натискання на телефоні
+        let taimer = null;
+        b.addEventListener("touchstart", function (e) {
+            const t = e.touches[0];
+            taimer = setTimeout(function () {
+                pokazatyMenuDnya(t.clientX, t.clientY, data);
+            }, 500);
+        }, { passive: true });
+        b.addEventListener("touchend", function () { clearTimeout(taimer); });
+        b.addEventListener("touchmove", function () { clearTimeout(taimer); });
+
         kont.appendChild(b);
     });
 }
