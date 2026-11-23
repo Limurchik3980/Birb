@@ -94,6 +94,81 @@ function vidkrytyZbereghenyDen(data) {
     };
     vidkrytyEditor();
 }
+// Поле пошуку, нотатка і зона для перетягування іконок у порожній активності
+function poshukovePole(s, k, slot) {
+    const ryad = document.createElement("div");
+    ryad.className = "poshuk-ryad";
+
+    // Перетягування іконки справа в цей рядок
+    ryad.addEventListener("dragover", function (e) {
+        if (peretyaguvanyj && peretyaguvanyj.k === k) e.preventDefault();
+    });
+    ryad.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (s.mistce || !peretyaguvanyj || peretyaguvanyj.k !== k) return;
+        s.mistce = { emoji: peretyaguvanyj.emoji, tekst: peretyaguvanyj.tekst };
+        renderBloky();
+    });
+
+    // Поле пошуку зі списком варіантів
+    const obgortka = document.createElement("div");
+    obgortka.className = "poshuk-obg";
+
+    const pole = document.createElement("input");
+    pole.type = "text";
+    pole.className = "zona poshuk-pole";
+    pole.placeholder = KAT[k].mistce;
+
+    const spysok = document.createElement("div");
+    spysok.className = "poshuk-spysok";
+    spysok.hidden = true;
+
+    function pokazatyVarianty() {
+        const q = pole.value.trim().toLowerCase();
+        spysok.innerHTML = "";
+        const znajdeni = ikony[k].filter(ik => ik.tekst.toLowerCase().includes(q));
+        znajdeni.forEach(function (ik) {
+            const v = document.createElement("div");
+            v.className = "poshuk-variant";
+            v.textContent = ik.emoji + " " + ik.tekst;
+            // mousedown спрацьовує раніше за blur, тож список встигає отримати клік
+            v.addEventListener("mousedown", function (e) {
+                e.preventDefault();
+                s.mistce = { emoji: ik.emoji, tekst: ik.tekst };
+                renderBloky();
+            });
+            spysok.appendChild(v);
+        });
+        spysok.hidden = znajdeni.length === 0;
+    }
+
+    pole.addEventListener("focus", pokazatyVarianty);
+    pole.addEventListener("input", pokazatyVarianty);
+    pole.addEventListener("blur", function () { spysok.hidden = true; });
+
+    obgortka.appendChild(pole);
+    obgortka.appendChild(spysok);
+    ryad.appendChild(obgortka);
+
+    // Нотатка тільки для активностей
+    if (k === "akt") {
+        const nota = document.createElement("input");
+        nota.type = "text";
+        nota.className = "nota-pole";
+        nota.placeholder = "Нотатка";
+        nota.addEventListener("keydown", function (e) {
+            if (e.key !== "Enter") return;
+            const t = nota.value.trim();
+            if (!t) return;
+            // Емоджі 📝 для нотаток, іконку в список не додаємо
+            s.mistce = { emoji: "📝", tekst: t };
+            renderBloky();
+        });
+        ryad.appendChild(nota);
+    }
+
+    slot.appendChild(ryad);
+}
 
 function renderBloky() {
     ["akt", "khar"].forEach(function (k) {
@@ -236,21 +311,7 @@ function renderBloky() {
                     slot.appendChild(ob);
 
                 } else {
-                    // Порожня зона для перетягування іконок
-                    const zona = document.createElement("div");
-                    zona.className = "zona";
-                    zona.textContent = KAT[k].mistce;
-
-                    zona.addEventListener("dragover", function (e) {
-                        if (peretyaguvanyj && peretyaguvanyj.k === k) e.preventDefault();
-                    });
-                    zona.addEventListener("drop", function (e) {
-                        e.preventDefault();
-                        if (s.mistce || !peretyaguvanyj || peretyaguvanyj.k !== k) return;
-                        s.mistce = { emoji: peretyaguvanyj.emoji, tekst: peretyaguvanyj.tekst };
-                        renderBloky();
-                    });
-                    slot.appendChild(zona);
+                    poshukovePole(s, k, slot);
                 }
 
                 gr.appendChild(slot);

@@ -213,3 +213,95 @@
     font-size: 13px;
     color: #aaa;
 }
+
+/* Поле пошуку, нотатка і список варіантів */
+.poshuk-ryad {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.poshuk-obg {
+    position: relative;
+}
+
+.poshuk-pole {
+    width: 170px;
+}
+
+.poshuk-spysok {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    min-width: 200px;
+    max-height: 160px;
+    overflow-y: auto;
+    margin-top: 4px;
+    background: #2e2e3a;
+    border: 1px solid #555;
+    border-radius: 10px;
+}
+
+.poshuk-variant {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.poshuk-variant:hover {
+    background: #3a3a48;
+}
+
+.nota-pole {
+    width: 140px;
+    font-size: 13px;
+    padding: 3px 10px;
+}
+
+/* Поле пошуку, нотатка і список варіантів */
+.poshuk-ryad {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.poshuk-obg {
+    position: relative;
+}
+
+.poshuk-pole {
+    width: 170px;
+}
+
+.poshuk-spysok {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    min-width: 200px;
+    max-height: 160px;
+    overflow-y: auto;
+    margin-top: 4px;
+    background: #2e2e3a;
+    border: 1px solid #555;
+    border-radius: 10px;
+}
+
+.poshuk-variant {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.poshuk-variant:hover {
+    background: #3a3a48;
+}
+
+.nota-pole {
+    width: 140px;
+    font-size: 13px;
+    padding: 3px 10px;
+}
