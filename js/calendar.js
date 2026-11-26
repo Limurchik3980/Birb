@@ -1,12 +1,22 @@
 // ===== Календар: День, Тиждень, Місяць =====
 const KAL = {
     rezhym: "misyac",   // "den", "tyzhden" або "misyac"
-    data: new Date()    // дата, навколо якої показуємо календар
+    data: new Date()
 };
 
 const KAL_DNI = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
-// Ключ дати виду "2026-11-23", щоб порівнювати дні
+// ===== Справи в календарі =====
+// podiyi["2026-11-23"] = [{ emoji, nazva, pochatok, kinec, notatka }]
+let podiyi = JSON.parse(localStorage.getItem("kal-podiyi")) || {};
+let kalIgnoreClick = false; // щоб після довгого натискання не спрацьовував клік
+
+function kalZberehtyPodiyi() {
+    localStorage.setItem("kal-podiyi", JSON.stringify(podiyi));
+    hmaraZberehty({ podiyi: JSON.stringify(podiyi) });
+}
+
+// Ключ дати виду "2026-11-23"
 function kalKlyuch(d) {
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 }
@@ -41,17 +51,6 @@ function kalZagolovok() {
         return p.getDate() + " " + MISYATSI[p.getMonth()] + " – " + k.getDate() + " " + MISYATSI[k.getMonth()] + " " + k.getFullYear();
     }
     return d.getDate() + " " + MISYATSI[d.getMonth()] + " " + d.getFullYear() + ", " + DNI_TYZH[d.getDay()];
-}
-
-// Одна клітинка дня
-// ===== Справи в календарі =====
-// podiyi["2026-11-23"] = [{ emoji, nazva, pochatok, kinec, notatka }]
-let podiyi = JSON.parse(localStorage.getItem("kal-podiyi")) || {};
-let kalIgnoreClick = false; // щоб після довгого натискання не спрацьовував клік
-
-function kalZberehtyPodiyi() {
-    localStorage.setItem("kal-podiyi", JSON.stringify(podiyi));
-    hmaraZberehty({ podiyi: JSON.stringify(podiyi) });
 }
 
 // Правий клік на ПК або довге натискання на телефоні
@@ -155,7 +154,17 @@ function kalFormaPodiyi(data, pochatok) {
     nazva.vvid.focus();
 }
 
-// Одна клітинка дня: номер, справи і правий клік / довге натискання
+// Кнопка з текстом
+function kalKnopka(tekst, diya, aktyvna) {
+    const b = document.createElement("button");
+    b.className = "kal-knopka";
+    b.textContent = tekst;
+    if (aktyvna) b.classList.add("aktyvna");
+    b.addEventListener("click", diya);
+    return b;
+}
+
+// Одна клітинка дня: номер, справи, клік і правий клік / довге натискання
 function kalKomirka(dt, siohodni, potochna) {
     const k = document.createElement("div");
     k.className = "kal-komirka";
@@ -185,17 +194,6 @@ function kalKomirka(dt, siohodni, potochna) {
     return k;
 }
 
-// Кнопка з текстом
-function kalKnopka(tekst, diya, aktyvna) {
-    const b = document.createElement("button");
-    b.className = "kal-knopka";
-    b.textContent = tekst;
-    if (aktyvna) b.classList.add("aktyvna");
-    b.addEventListener("click", diya);
-    return b;
-}
-
-// Шкала годин для режиму "День"
 // Шкала годин для режиму "День" зі справами
 function kalDenShkala(kont) {
     const data = kalKlyuch(KAL.data);
@@ -251,13 +249,6 @@ function kalDenShkala(kont) {
     wrap.scrollTop = 7 * 48;
 }
 
-wrap.appendChild(shkala);
-kont.appendChild(wrap);
-
-// Стартуємо з 07:00, щоб ранок був видно одразу
-wrap.scrollTop = 7 * 48;
-}
-
 // Малює весь календар заново
 function kalRender() {
     const kont = document.getElementById("kalendar");
@@ -296,7 +287,6 @@ function kalRender() {
         return;
     }
 
-
     // Заголовок з днями тижня
     const golova = document.createElement("div");
     golova.className = "kal-golova";
@@ -307,7 +297,7 @@ function kalRender() {
     });
     kont.appendChild(golova);
 
-    // Сама сітка: місяць показує 6 тижнів, тиждень показує 7 днів
+    // Сітка: місяць показує 6 тижнів, тиждень показує 7 днів
     const sitka = document.createElement("div");
     sitka.className = "kal-sitka";
     const pochatok = KAL.rezhym === "misyac"
