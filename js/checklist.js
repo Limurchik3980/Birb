@@ -1,7 +1,5 @@
 // ===== Чекліст =====
 const spysok = document.getElementById("chek-list");
-const pole = document.getElementById("nova-sprava");
-const knopka = document.getElementById("dodaty");
 let zavdannya = JSON.parse(localStorage.getItem("chekliest")) || [];
 
 function zberehty() {
@@ -42,19 +40,4 @@ function pokazaty() {
         spysok.appendChild(li);
     });
 }
-
-function dodaty() {
-    const tekst = pole.value.trim();
-    if (tekst === "") return;
-    zavdannya.push({ tekst: tekst, zrobleno: false });
-    pole.value = "";
-    zberehty();
-    pokazaty();
-}
-
-knopka.addEventListener("click", dodaty);
-pole.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") dodaty();
-});
-
 pokazaty();

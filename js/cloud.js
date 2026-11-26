@@ -51,18 +51,24 @@ async function zavantazhytyZHmary() {
             dni = JSON.parse(d.dni);
             localStorage.setItem("kesha-dni3", d.dni);
         }
+        if (d.podiyi !== undefined) {
+            podiyi = JSON.parse(d.podiyi);
+            localStorage.setItem("kal-podiyi", d.podiyi);
+        }
     } else {
         // Перший вхід: переносимо те, що вже є в цьому браузері
         await ref.set({
             chekliest: JSON.stringify(zavdannya),
             ikony: JSON.stringify(ikony),
-            dni: JSON.stringify(dni)
+            dni: JSON.stringify(dni),
+            podiyi: JSON.stringify(podiyi)
         });
     }
 
     pokazaty();
     renderIkony();
     pokazatyMinuli();
+    kalRender();
 }
 
 // Показує в меню, увійшла людина чи ні

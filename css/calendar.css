@@ -112,3 +112,58 @@
     font-size: 12px;
     color: #888;
 }
+
+/* Справи в календарі */
+.kal-podiya {
+    font-size: 12px;
+    background: #2e3b52;
+    border-left: 3px solid #6a8fd6;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-top: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.kal-podiya-chas {
+    position: absolute;
+    left: 60px;
+    right: 10px;
+    top: 4px;
+}
+
+.kal-bez-chasu {
+    padding: 6px 0;
+}
+
+/* Вікно редактора справи */
+.kal-forma {
+    width: 360px;
+    max-width: 92vw;
+}
+
+.kal-pole-ryad {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.kal-pole-ryad input,
+.kal-pole-ryad textarea {
+    color: #fff;
+    background: #22222a;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.kal-pole-ryad textarea {
+    min-height: 60px;
+    resize: vertical;
+}
