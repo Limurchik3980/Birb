@@ -69,6 +69,33 @@ function kalKnopka(tekst, diya, aktyvna) {
     return b;
 }
 
+// Шкала годин для режиму "День"
+function kalDenShkala(kont) {
+    const wrap = document.createElement("div");
+    wrap.className = "kal-skrol";
+
+    const shkala = document.createElement("div");
+    shkala.className = "kal-shkala";
+
+    for (let h = 0; h < 24; h++) {
+        const ryad = document.createElement("div");
+        ryad.className = "kal-chas";
+
+        const pidpys = document.createElement("span");
+        pidpys.className = "kal-chas-pidpys";
+        pidpys.textContent = String(h).padStart(2, "0") + ":00";
+
+        ryad.appendChild(pidpys);
+        shkala.appendChild(ryad);
+    }
+
+    wrap.appendChild(shkala);
+    kont.appendChild(wrap);
+
+    // Стартуємо з 07:00, щоб ранок був видно одразу
+    wrap.scrollTop = 7 * 48;
+}
+
 // Малює весь календар заново
 function kalRender() {
     const kont = document.getElementById("kalendar");
@@ -103,12 +130,10 @@ function kalRender() {
     kont.appendChild(top);
 
     if (KAL.rezhym === "den") {
-        const porozhno = document.createElement("div");
-        porozhno.className = "kal-porozhno";
-        porozhno.textContent = "Немає подій";
-        kont.appendChild(porozhno);
+        kalDenShkala(kont);
         return;
     }
+
 
     // Заголовок з днями тижня
     const golova = document.createElement("div");
